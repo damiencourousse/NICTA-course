@@ -72,8 +72,8 @@ headOr ::
   a
   -> List a
   -> a
-headOr =
-  error "todo"
+headOr _ (x:._) = x
+headOr def Nil = def
 
 -- | The product of the elements of a list.
 --
@@ -85,8 +85,9 @@ headOr =
 product ::
   List Int
   -> Int
-product =
-  error "todo"
+-- product Nil = 1
+-- product (x:.xs) = x * (product xs)
+product = foldRight (*) 1
 
 -- | Sum the elements of the list.
 --
@@ -100,8 +101,7 @@ product =
 sum ::
   List Int
   -> Int
-sum =
-  error "todo"
+sum = foldRight (+) 0
 
 -- | Return the length of the list.
 --
@@ -112,8 +112,8 @@ sum =
 length ::
   List a
   -> Int
-length =
-  error "todo"
+length Nil = 0
+length (_:.xs) = 1 + (length xs)
 
 -- | Map the given function on each element of the list.
 --
@@ -127,8 +127,8 @@ map ::
   (a -> b)
   -> List a
   -> List b
-map =
-  error "todo"
+map _ Nil = Nil
+map f (a:.as) = f a :. map f as
 
 -- | Return elements satisfying the given predicate.
 --
@@ -213,7 +213,7 @@ flattenAgain =
 
 -- | Convert a list of optional values to an optional list of values.
 --
--- * If the list contains all `Full` values, 
+-- * If the list contains all `Full` values,
 -- then return `Full` list of values.
 --
 -- * If the list contains one or more `Empty` values,
